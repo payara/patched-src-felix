@@ -16,6 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+// Portions Copyright [2018] Payara Foundation and/or affiliates
+
 package org.apache.felix.fileinstall.internal;
 
 import java.io.BufferedInputStream;
@@ -608,14 +610,14 @@ public class DirectoryWatcher extends Thread implements BundleListener
         if (tmpDir == null)
         {
             File javaIoTmpdir = new File(System.getProperty("java.io.tmpdir"));
-            if (!javaIoTmpdir.exists() && !javaIoTmpdir.mkdirs()) {
+            if (!javaIoTmpdir.exists() && !javaIoTmpdir.mkdirs() && !javaIoTmpdir.canWrite()) {
                 throw new IllegalStateException("Unable to create temporary directory " + javaIoTmpdir);
             }
             Random random = new Random();
             while (tmpDir == null)
             {
                 File f = new File(javaIoTmpdir, "fileinstall-" + Long.toString(random.nextLong()));
-                if (!f.exists() && f.mkdirs())
+                if (!f.exists())
                 {
                     tmpDir = f;
                     tmpDir.deleteOnExit();
